@@ -1,5 +1,7 @@
 exports.getBootcamps = (req, res, next) => {
-  res.status(200).json({ success: true, data: "Show all bootcamps" });
+  res
+    .status(200)
+    .json({ success: true, data: "Show all bootcamps", hello: req.hello });
 };
 
 exports.getBootcamp = (req, res, next) => {
