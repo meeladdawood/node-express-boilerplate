@@ -6,6 +6,7 @@ exports.getBootcamps = async (req, res, next) => {
 
     res.status(200).json({
       success: true,
+      count: bootcamps.length,
       data: bootcamps,
     });
   } catch (error) {
@@ -47,12 +48,52 @@ exports.createBootcamp = async (req, res, next) => {
 
 exports.updateBootcamp = async (req, res, next) => {
   try {
-    const updatedBootcamp = await Bootcamp.updateOne();
-  } catch (error) {}
+    const updatedBootcamp = await Bootcamp.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedBootcamp) {
+      return res.status(400).json({
+        success: false,
+        msg: "not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: updatedBootcamp,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      msg: error.message,
+    });
+  }
 };
 
-exports.deleteBootcamp = (req, res, next) => {
-  res
-    .status(200)
-    .json({ success: true, data: `Delete bootcamp ${req.params.id}` });
+exports.deleteBootcamp = async (req, res, next) => {
+  try {
+    const deletedBootcamp = await Bootcamp.findByIdAndDelete(req.params.id);
+
+    if (!deletedBootcamp) {
+      return res.status(404).json({
+        success: false,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      deleted: deletedBootcamp,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      msg: error.message,
+    });
+  }
 };
