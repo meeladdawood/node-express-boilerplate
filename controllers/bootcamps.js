@@ -2,7 +2,6 @@ const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middleware/async");
 const geocoder = require("../utils/geocoder");
 const Bootcamp = require("../models/Bootcamp");
-const { remove } = require("../models/Bootcamp");
 
 exports.getBootcamps = asyncHandler(async (req, res, next) => {
   let query;
