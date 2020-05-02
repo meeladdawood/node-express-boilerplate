@@ -7,6 +7,8 @@ const colors = require("colors");
 const fileUpload = require("express-fileupload");
 const cookieParser = require("cookie-parser");
 const mongoSanitize = require("express-mongo-sanitize");
+const helmet = require("helmet");
+const xss = require("xss-clean");
 const errorHandler = require("./middleware/error");
 
 dotenv.config({ path: "./config/config.env" });
@@ -37,6 +39,11 @@ app.use(fileUpload());
 
 //Sanitize Data
 app.use(mongoSanitize());
+
+//Set secuirty headers
+app.use(helmet());
+
+app.use(xss());
 
 // Set Static folder
 app.use(express.static(path.join(__dirname, "public")));
